@@ -19,3 +19,4 @@ This is an automated test release created for reproducing Releases index behavio
 - Repro cycle 2 at 2025-11-25T14:56:32+03:00
 - Repro cycle 1 at 2025-11-25T14:58:00+03:00
 - Repro cycle 1 at 2025-11-25T19:35:38+03:00
+- Repro cycle 2 at 2025-11-25T19:36:01+03:00
