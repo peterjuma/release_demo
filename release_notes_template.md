@@ -9,3 +9,4 @@ This is an automated test release created for reproducing Releases index behavio
 - Repro cycle 2 at 2025-11-25T14:47:42+03:00
 - Repro cycle 3 at 2025-11-25T14:48:04+03:00
 - Repro cycle 4 at 2025-11-25T14:48:26+03:00
+- Repro cycle 5 at 2025-11-25T14:48:48+03:00
