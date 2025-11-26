@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    env:
-      GH_TOKEN: ${{ secrets.RELEASE_PAT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,6 +27,8 @@ jobs:
           sed "s/RELEASE/${release}/g" release_notes_template.md > release_notes.md
 
       - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}  # or secrets.RELEASE_PAT if you prefer
         run: |
           release="${{ github.ref_name }}"
 
