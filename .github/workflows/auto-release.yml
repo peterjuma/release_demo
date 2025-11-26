@@ -1,39 +1,46 @@
-name: Auto Release on push tag
+name: Draft release on tag
 
 on:
   push:
     tags:
-      - v*
-      - V*
+      - 'v*'
+      - 'V*'
 
 jobs:
-  build:
-    name: Build and create draft release
+  draft-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Optional: build an artifact
       - name: Build artifact
         run: |
           mkdir -p artifacts
-          echo "Hello world on $(date -I) for ${{ github.ref_name }}" > artifacts/product.txt
+          echo "Hello from tag ${{ github.ref_name }}" > artifacts/hello.txt
 
+      # Optional: simple release notes
       - name: Prepare release notes
         run: |
           release="${{ github.ref_name }}"
-          sed "s/RELEASE/${release}/g" release_notes_template.md > release_notes.md
+          cat > release_notes.md <<EOF
+          # Release ${release}
+
+          This is an automatically created *draft* release for tag ${release}.
+          EOF
 
       - name: Create draft release
         env:
-          GH_TOKEN: ${{ github.token }}  # or secrets.RELEASE_PAT if you prefer
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           release="${{ github.ref_name }}"
 
-          gh release create "${release}" \
+          gh release create "$release" \
             --draft \
             -F release_notes.md \
-            -t "Release ${release}"
-            # add artifacts here if you want, e.g. artifacts/product.txt
+            -t "Release $release" \
+            artifacts/hello.txt
