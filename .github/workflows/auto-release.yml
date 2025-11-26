@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and release the artifact
+    name: Build and create draft release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,22 +23,17 @@ jobs:
           mkdir -p artifacts
           echo "Hello world on $(date -I) for ${{ github.ref_name }}" > artifacts/product.txt
 
-      - name: Create Release
+      - name: Prepare release notes
+        run: |
+          release="${{ github.ref_name }}"
+          sed "s/RELEASE/${release}/g" release_notes_template.md > release_notes.md
+
+      - name: Create draft release
         run: |
           release="${{ github.ref_name }}"
 
-          # Determine prerelease / latest flags
-          if [[ "$release" =~ ^.+rc[0-9]+$ ]]; then
-            PRERELEASE="--prerelease"
-            LATEST="--latest=false"
-          else
-            PRERELEASE=""
-            LATEST="--latest"
-          fi
-
-          # Prepare release notes
-          sed "s/RELEASE/${release}/g" release_notes_template.md > release_notes.md
-
-          # Create draft release
-          gh release create "${release}" --draft ${PRERELEASE} -F release_notes.md -t "Release ${release}" ${LATEST}
-
+          gh release create "${release}" \
+            --draft \
+            -F release_notes.md \
+            -t "Release ${release}"
+            # add artifacts here if you want, e.g. artifacts/product.txt
