@@ -39,8 +39,4 @@ jobs:
           set -euo pipefail
           release="${{ github.ref_name }}"
 
-          gh release create "$release" \
-            --draft \
-            -F release_notes.md \
-            -t "Release $release" \
-            artifacts/hello.txt
+          gh release create "$release" --draft -F release_notes.md -t "Release $release" 
