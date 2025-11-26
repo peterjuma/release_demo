@@ -42,8 +42,3 @@ jobs:
           # Create draft release
           gh release create "${release}" --draft ${PRERELEASE} -F release_notes.md -t "Release ${release}" ${LATEST}
 
-          # Upload artifacts
-          gh release upload "${release}" --clobber $(find artifacts -type f)
-
-          # Publish the release (draft -> published)
-          gh release edit "${release}" --draft=false
